@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="150sp"
         android:layout_below="@id/upper_bg"
-        android:background="@color/white"
+        android:background="@color/bg2"
         android:layout_marginHorizontal="50sp"
         android:layout_marginTop="-25sp">
 
@@ -84,8 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="Добро пожаловать, выберите, что хотите делать:"
-            android:textColor="@color/purple_700"
+            android:text="Добро пожаловать,имя , выберите, что хотите делать:"
+            android:textColor="@color/white"
             />
     </LinearLayout>
 

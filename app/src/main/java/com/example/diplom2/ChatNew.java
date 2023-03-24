@@ -2,17 +2,20 @@ package com.example.diplom2;
 
 import static com.example.diplom2.R.layout.list_item;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.diplom2.models.Message;
 import com.firebase.ui.auth.AuthUI;
@@ -24,17 +27,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import android.text.format.DateFormat;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class ChatNew extends AppCompatActivity {
     private static final int SIGN_IN_CODE = 1;
     private static final int MAX_MESSAGE_LENGTH = 150;
-    //Попытки сделать как первый вариант
-    ArrayList<Message> arrayMessages = new ArrayList<>();
 
 
     private RelativeLayout chatNew;
@@ -50,7 +47,7 @@ public class ChatNew extends AppCompatActivity {
         setContentView(R.layout.activity_chat_new);
         chatNew = findViewById(R.id.chat_new);
         sendBtn = findViewById(R.id.btnSend);
-
+        displayAllMessages();
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -72,15 +69,21 @@ public class ChatNew extends AppCompatActivity {
                 textField.setText("");
             }
         });
-        if (FirebaseAuth.getInstance().getCurrentUser() == null)
-            startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().build(), SIGN_IN_CODE);
-        else {
-            Snackbar.make(chatNew, "Вы авторизованы", Snackbar.LENGTH_SHORT).show();
-            displayAllMessages();
-        }
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 
     private void displayAllMessages() {
+        Log.d(ChatNew.class.getSimpleName(), "displayAllMessages");
         options =
                 new FirebaseListOptions.Builder<Message>()
                         .setQuery(myRef, Message.class)
@@ -89,7 +92,8 @@ public class ChatNew extends AppCompatActivity {
         ListView listOfMsg = findViewById(R.id.list_of_messages);
         adapter = new FirebaseListAdapter<Message>(options) {
             @Override
-            protected void populateView(@NonNull View v, @NonNull Message model, int position){
+            protected void populateView(@NonNull View v, @NonNull Message model, int position) {
+                Log.d(ChatNew.class.getSimpleName(), "getMessgaeFromFB: " + model.getUserName());
                 TextView msgUser, msgTime, msgText;
                 msgUser = v.findViewById(R.id.message_user);
                 msgTime = v.findViewById(R.id.message_time);

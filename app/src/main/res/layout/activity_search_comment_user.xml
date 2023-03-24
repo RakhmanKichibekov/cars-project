@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="120sp"
         android:layout_below="@id/upper_bg"
-        android:background="@color/white"
+        android:background="@color/bg2"
         android:layout_marginHorizontal="50sp"
         android:layout_marginTop="-50sp">
 

@@ -105,7 +105,7 @@ public class Number extends AppCompatActivity {
     }
 
     public void goChats(View view) {
-        Intent intent = new Intent(this, Chats.class);
+        Intent intent = new Intent(this, ChatNew.class);
         startActivity(intent);
     }
 
